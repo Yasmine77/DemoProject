@@ -1,11 +1,15 @@
-import React from 'react';
-import { Box, Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import GridViewIcon from '@mui/icons-material/GridView';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import React from "react";
+import { Box, Button } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import GridViewIcon from "@mui/icons-material/GridView";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const ButtonBar = ({ selectedRows = [], handleAdd, handleEdit, handleDelete }) => {
+const ButtonBar = ({
+  selectedRows = [],
+  handleAdd,
+  handleEdit,
+  handleDelete,
+}) => {
   return (
     <Box display="flex" alignItems="center" mb={2}>
       <Button startIcon={<AddIcon />} onClick={handleAdd}>
@@ -13,8 +17,7 @@ const ButtonBar = ({ selectedRows = [], handleAdd, handleEdit, handleDelete }) =
       </Button>
       {selectedRows.length === 1 && (
         <Button startIcon={<GridViewIcon />} onClick={handleEdit}>
-        Edit in grid view
-
+          Edit in grid view
         </Button>
       )}
       {selectedRows.length > 0 && (

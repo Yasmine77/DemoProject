@@ -2,13 +2,13 @@ import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
 import ProjectForm from './ProjectForm'; // Adjust the import path as necessary
 
-const EditProjectModal = ({ open, onClose, project }) => {
+const EditProjectModal = ({ open, onClose, selectedProject }) => {
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="lg">
       <DialogTitle>Edit Project</DialogTitle>
       <DialogContent>
         {/* Pass the project details to the ProjectForm */}
-        <ProjectForm initialData={project} />
+        <ProjectForm initialData={selectedProject} />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">

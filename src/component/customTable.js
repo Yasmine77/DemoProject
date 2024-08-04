@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -11,21 +11,23 @@ import {
   Box,
   Button,
   TextField,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ButtonBar from './ButtonBar'; // Adjust the import path as necessary
-import AddProjectModal from './AddProjectModal'; // Adjust the import path as necessary
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ButtonBar from "./ButtonBar"; // Adjust the import path as necessary
+import AddProjectModal from "./AddProjectModal"; // Adjust the import path as necessary
+import EditProjectModal from "./EditProjectModal";
 
-
-const CustomTable = ({ columns, data ,setData}) => {
+const CustomTable = ({ columns, data, setData }) => {
   const [selectedRows, setSelectedRows] = useState([]);
-  const [filterText, setFilterText] = useState('');
+  const [selectedProject, setSelectedProject] = useState({});
+  const [filterText, setFilterText] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [newProjectForm, setNewProjectForm] = useState();
 
   const handleSelectRow = (index) => {
+    console.log({ index });
     const newSelectedRows = [...selectedRows];
     if (newSelectedRows.includes(index)) {
       newSelectedRows.splice(newSelectedRows.indexOf(index), 1);
@@ -36,16 +38,22 @@ const CustomTable = ({ columns, data ,setData}) => {
   };
 
   const handleSelectAll = (event) => {
+    console.log({ event });
+
     if (event.target.checked) {
-      setSelectedRows(data.map((_, index) => index));
+      setSelectedRows(data.map((el) => el.id));
     } else {
       setSelectedRows([]);
     }
   };
 
+  useEffect(() => {
+    setSelectedProject(data.find((el) => el?.id === selectedRows?.[0]));
+  }, [data, selectedRows]);
+
   const handleDeleteSelected = () => {
     // Handle deletion of selected rows
-    console.log('Delete selected rows:', selectedRows);
+    console.log("Delete selected rows:", selectedRows);
     setSelectedRows([]);
   };
 
@@ -53,13 +61,20 @@ const CustomTable = ({ columns, data ,setData}) => {
     setModalOpen(true);
   };
 
+  const handleEdit = () => {
+    setModalOpen(true);
+  };
+
   const handleCloseModal = () => {
     setModalOpen(false);
   };
 
-  const filteredData = data.filter(row =>
-    columns.some(column =>
-      row[column.id]?.toString().toLowerCase().includes(filterText.toLowerCase())
+  const filteredData = data.filter((row) =>
+    columns.some((column) =>
+      row[column.id]
+        ?.toString()
+        .toLowerCase()
+        .includes(filterText.toLowerCase())
     )
   );
 
@@ -68,18 +83,19 @@ const CustomTable = ({ columns, data ,setData}) => {
       <ButtonBar
         selectedRows={selectedRows}
         handleAdd={handleAdd}
-        handleEdit={() => console.log('Edit selected row')}
+        handleEdit={handleEdit}
         handleDelete={handleDeleteSelected}
-        handleGridView={() => console.log('Edit in grid view')}
+        handleGridView={() => console.log("Edit in grid view")}
       />
       <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
         <Table stickyHeader>
-          <TableHead sx={{ backgroundColor: '#f5fbff' }}>
+          <TableHead sx={{ backgroundColor: "#f5fbff" }}>
             <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
                   indeterminate={
-                    selectedRows.length > 0 && selectedRows.length < filteredData.length
+                    selectedRows.length > 0 &&
+                    selectedRows.length < filteredData.length
                   }
                   checked={selectedRows.length === filteredData.length}
                   onChange={handleSelectAll}
@@ -97,8 +113,8 @@ const CustomTable = ({ columns, data ,setData}) => {
               <TableRow key={index}>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedRows.includes(index)}
-                    onChange={() => handleSelectRow(index)}
+                    checked={selectedRows.includes(row.id)}
+                    onChange={() => handleSelectRow(row.id)}
                     icon={<CircleOutlinedIcon />}
                     checkedIcon={<CheckCircleIcon />}
                   />
@@ -111,9 +127,23 @@ const CustomTable = ({ columns, data ,setData}) => {
           </TableBody>
         </Table>
       </TableContainer>
-      
+
       {/* Add Project Modal */}
-      <AddProjectModal open={modalOpen} onClose={handleCloseModal}  setNewProjectForm={setNewProjectForm} />
+      <AddProjectModal
+        data={data}
+        open={modalOpen}
+        onClose={handleCloseModal}
+        setData={setData}
+      />
+
+      {/* Edit Project Modal */}
+      <EditProjectModal
+        data={data}
+        selectedProject={selectedProject}
+        open={modalOpen}
+        onClose={handleCloseModal}
+        setData={setData}
+      />
     </Box>
   );
 };

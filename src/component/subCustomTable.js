@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,18 +11,26 @@ import {
   Box,
   Button,
   TextField,
-} from '@mui/material';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import SubGridButtonBar from './SubGridButtonBar'; // Ensure the import path is correct
+} from "@mui/material";
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import SubGridButtonBar from "./SubGridButtonBar"; // Ensure the import path is correct
 
-const SubCustomTable = ({ columns, data, onAdd, onEdit, onDelete }) => {
+const SubCustomTable = ({
+  columns,
+  data,
+  onAdd,
+  onEdit,
+  onDelete,
+  setDataSelected,
+}) => {
   const [rows, setRows] = useState(data);
   const [selectedRows, setSelectedRows] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
   const [newRow, setNewRow] = useState(null);
 
   const handleSelectRow = (index) => {
+    console.log({ index });
     const newSelectedRows = [...selectedRows];
     if (newSelectedRows.includes(index)) {
       newSelectedRows.splice(newSelectedRows.indexOf(index), 1);
@@ -33,6 +41,7 @@ const SubCustomTable = ({ columns, data, onAdd, onEdit, onDelete }) => {
   };
 
   const handleSelectAll = (event) => {
+    console.log({ event });
     if (event.target.checked) {
       setSelectedRows(rows.map((_, index) => index));
     } else {
@@ -67,9 +76,7 @@ const SubCustomTable = ({ columns, data, onAdd, onEdit, onDelete }) => {
   const handleChangeEditRow = (index, event) => {
     const { name, value } = event.target;
     setRows((prevRows) =>
-      prevRows.map((row, i) =>
-        i === index ? { ...row, [name]: value } : row
-      )
+      prevRows.map((row, i) => (i === index ? { ...row, [name]: value } : row))
     );
   };
 
@@ -83,7 +90,9 @@ const SubCustomTable = ({ columns, data, onAdd, onEdit, onDelete }) => {
   };
 
   const handleDeleteSelected = () => {
-    const updatedRows = rows.filter((_, index) => !selectedRows.includes(index));
+    const updatedRows = rows.filter(
+      (_, index) => !selectedRows.includes(index)
+    );
     setRows(updatedRows);
     setSelectedRows([]);
     if (onDelete) onDelete();
@@ -104,7 +113,7 @@ const SubCustomTable = ({ columns, data, onAdd, onEdit, onDelete }) => {
       />
       <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
         <Table stickyHeader>
-          <TableHead sx={{ backgroundColor: '#f5fbff' }}>
+          <TableHead sx={{ backgroundColor: "#f5fbff" }}>
             <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
@@ -135,41 +144,39 @@ const SubCustomTable = ({ columns, data, onAdd, onEdit, onDelete }) => {
                 </TableCell>
                 {columns.map((column) => (
                   <TableCell key={column.id}>
-                    {(index === rows.length && newRow) ? ( // New row editing
+                    {index === rows.length && newRow ? ( // New row editing
                       <TextField
                         name={column.id}
-                        value={newRow[column.id] || ''}
+                        value={newRow[column.id] || ""}
                         onChange={handleChangeNewRow}
                       />
+                    ) : editingRow === index ? (
+                      <TextField
+                        name={column.id}
+                        value={row[column.id] || ""}
+                        onChange={(event) => handleChangeEditRow(index, event)}
+                      />
                     ) : (
-                      (editingRow === index ? (
-                        <TextField
-                          name={column.id}
-                          value={row[column.id] || ''}
-                          onChange={(event) => handleChangeEditRow(index, event)}
-                        />
-                      ) : (
-                        row[column.id]
-                      ))
+                      row[column.id]
                     )}
                   </TableCell>
                 ))}
                 <TableCell>
-                  {(index === rows.length && newRow) ? ( // New row action buttons
-                    <>
-                      <Button onClick={handleSaveNewRow}>Save</Button>
-                      <Button onClick={handleCancelNewRow}>Cancel</Button>
-                    </>
-                  ) : (
-                    (editingRow === index ? (
+                  {
+                    index === rows.length && newRow ? ( // New row action buttons
+                      <>
+                        <Button onClick={handleSaveNewRow}>Save</Button>
+                        <Button onClick={handleCancelNewRow}>Cancel</Button>
+                      </>
+                    ) : editingRow === index ? (
                       <>
                         <Button onClick={handleSaveEdit}>Save</Button>
-                        <Button onClick={() => setEditingRow(null)}>Cancel</Button>
+                        <Button onClick={() => setEditingRow(null)}>
+                          Cancel
+                        </Button>
                       </>
-                    ) : (
-                      null // No action buttons needed here
-                    ))
-                  )}
+                    ) : null // No action buttons needed here
+                  }
                 </TableCell>
               </TableRow>
             ))}

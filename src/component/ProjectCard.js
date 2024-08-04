@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Card, CardContent, Grid, Typography, Box, Button, TextField, Input } from '@mui/material';
-import CustomChip from './CustomChip';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import {
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  Box,
+  Button,
+  TextField,
+  Input,
+} from "@mui/material";
+import CustomChip from "./CustomChip";
 
-const ProjectCard = ({ project }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedProject, setEditedProject] = useState(project);
+const ProjectCard = ({ project, isEditingProject, setData, onClose }) => {
+  const [isEditing, setIsEditing] = useState(isEditingProject || false);
+  const [projectValues, setProjectValues] = useState(project);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedProject((prevProject) => ({
+    setProjectValues((prevProject) => ({
       ...prevProject,
       [name]: value,
     }));
@@ -23,36 +32,43 @@ const ProjectCard = ({ project }) => {
   };
 
   const handleSave = () => {
+    setData((prev) => [...prev, projectValues]);
+
     // Implement save logic here, including handling the uploaded file
     // Simulate save logic with a delay
     setTimeout(() => {
       setIsEditing(false);
+      onClose()
     }, 1000);
   };
 
   const handleCancel = () => {
-    setEditedProject(project);
-    setIsEditing(false);
+    setProjectValues(project);
+    // setIsEditing(false);
   };
 
   return (
-    <Card sx={{ padding: 2, mb: 2, position: 'relative' }}>
+    <Card sx={{ padding: 2, mb: 2, position: "relative" }}>
       <CardContent>
         <Box
           sx={{
-            position: 'absolute',
+            position: "absolute",
             top: 8,
             right: 8,
             zIndex: 1,
-            display: 'flex',
-            alignItems: 'center',
+            display: "flex",
+            alignItems: "center",
           }}
         >
           <Typography variant="subtitle2" mr={1}>
             Status:
           </Typography>
-          
-          {project.status?<CustomChip label={editedProject.status} tag="status" />: ""}
+
+          {project.status ? (
+            <CustomChip label={projectValues.status} tag="status" />
+          ) : (
+            ""
+          )}
         </Box>
 
         <Typography variant="h6" mb={2}>
@@ -65,13 +81,13 @@ const ProjectCard = ({ project }) => {
               {isEditing ? (
                 <TextField
                   name="title"
-                  value={editedProject.title}
+                  value={projectValues.title}
                   onChange={handleChange}
                   fullWidth
                   size="small"
                 />
               ) : (
-                editedProject.title
+                projectValues.title
               )}
             </Typography>
           </Grid>
@@ -83,13 +99,13 @@ const ProjectCard = ({ project }) => {
                   {isEditing ? (
                     <TextField
                       name="type"
-                      value={editedProject.type}
+                      value={projectValues.type}
                       onChange={handleChange}
                       fullWidth
                       size="small"
                     />
                   ) : (
-                    <CustomChip label={editedProject.type} tag="type" />
+                    <CustomChip label={projectValues.type} tag="type" />
                   )}
                 </Box>
               </Box>
@@ -103,13 +119,16 @@ const ProjectCard = ({ project }) => {
                   {isEditing ? (
                     <TextField
                       name="implementationStatus"
-                      value={editedProject.implementationStatus}
+                      value={projectValues.implementationStatus}
                       onChange={handleChange}
                       fullWidth
                       size="small"
                     />
                   ) : (
-                    <CustomChip label={editedProject.implementationStatus} tag="implementationStatus" />
+                    <CustomChip
+                      label={projectValues.implementationStatus}
+                      tag="implementationStatus"
+                    />
                   )}
                 </Box>
               </Box>
@@ -123,13 +142,16 @@ const ProjectCard = ({ project }) => {
                   {isEditing ? (
                     <TextField
                       name="regionalStatus"
-                      value={editedProject.regionalStatus}
+                      value={projectValues.regionalStatus}
                       onChange={handleChange}
                       fullWidth
                       size="small"
                     />
                   ) : (
-                    <CustomChip label={editedProject.regionalStatus} tag="regionalStatus" />
+                    <CustomChip
+                      label={projectValues.regionalStatus}
+                      tag="regionalStatus"
+                    />
                   )}
                 </Box>
               </Box>
@@ -143,13 +165,16 @@ const ProjectCard = ({ project }) => {
                   {isEditing ? (
                     <TextField
                       name="regionalDialogue"
-                      value={editedProject.regionalDialogue}
+                      value={projectValues.regionalDialogue}
                       onChange={handleChange}
                       fullWidth
                       size="small"
                     />
                   ) : (
-                    <CustomChip label={editedProject.regionalDialogue} tag="regionalDialogue" />
+                    <CustomChip
+                      label={projectValues.regionalDialogue}
+                      tag="regionalDialogue"
+                    />
                   )}
                 </Box>
               </Box>
@@ -161,13 +186,13 @@ const ProjectCard = ({ project }) => {
               {isEditing ? (
                 <TextField
                   name="startYear"
-                  value={editedProject.startYear}
+                  value={projectValues.startYear}
                   onChange={handleChange}
                   fullWidth
                   size="small"
                 />
               ) : (
-                editedProject.startYear
+                projectValues.startYear
               )}
             </Typography>
           </Grid>
@@ -177,13 +202,13 @@ const ProjectCard = ({ project }) => {
               {isEditing ? (
                 <TextField
                   name="endYear"
-                  value={editedProject.endYear}
+                  value={projectValues.endYear}
                   onChange={handleChange}
                   fullWidth
                   size="small"
                 />
               ) : (
-                editedProject.endYear
+                projectValues.endYear
               )}
             </Typography>
           </Grid>
@@ -193,13 +218,13 @@ const ProjectCard = ({ project }) => {
               {isEditing ? (
                 <TextField
                   name="contact"
-                  value={editedProject.contact}
+                  value={projectValues.contact}
                   onChange={handleChange}
                   fullWidth
                   size="small"
                 />
               ) : (
-                editedProject.contact
+                projectValues.contact
               )}
             </Typography>
           </Grid>
@@ -211,13 +236,16 @@ const ProjectCard = ({ project }) => {
                   {isEditing ? (
                     <TextField
                       name="databaseStatus"
-                      value={editedProject.databaseStatus}
+                      value={projectValues.databaseStatus}
                       onChange={handleChange}
                       fullWidth
                       size="small"
                     />
                   ) : (
-                    <CustomChip label={editedProject.databaseStatus} tag="databaseStatus" />
+                    <CustomChip
+                      label={projectValues.databaseStatus}
+                      tag="databaseStatus"
+                    />
                   )}
                 </Box>
               </Box>
@@ -229,13 +257,13 @@ const ProjectCard = ({ project }) => {
               {isEditing ? (
                 <TextField
                   name="totalBudget"
-                  value={editedProject.totalBudget}
+                  value={projectValues.totalBudget}
                   onChange={handleChange}
                   fullWidth
                   size="small"
                 />
               ) : (
-                editedProject.totalBudget
+                projectValues.totalBudget
               )}
             </Typography>
           </Grid>
@@ -245,60 +273,73 @@ const ProjectCard = ({ project }) => {
               {isEditing ? (
                 <TextField
                   name="iat"
-                  value={editedProject.iat}
+                  value={projectValues.iat}
                   onChange={handleChange}
                   fullWidth
                   size="small"
                 />
               ) : (
-                editedProject.iat
+                projectValues.iat
               )}
             </Typography>
           </Grid>
-          
-            <Grid item xs={12} sm={6} md={4}>
-              <Typography variant="subtitle1">
-                <strong>Upload File:</strong>
-                <Input
-                  type="file"
-                  onChange={handleFileChange}
-                  fullWidth
-                  size="small"
-                />
-              </Typography>
-            </Grid>
-          
+
+          <Grid item xs={12} sm={6} md={4}>
+            <Typography variant="subtitle1">
+              <strong>Upload File:</strong>
+              <Input
+                type="file"
+                onChange={handleFileChange}
+                fullWidth
+                size="small"
+              />
+            </Typography>
+          </Grid>
+
           <Grid item xs={12}>
             <Typography variant="subtitle1">
               <strong>Comment:</strong>
               {isEditing ? (
                 <TextField
                   name="comment"
-                  value={editedProject.comment || ''}
+                  value={projectValues.comment || ""}
                   onChange={handleChange}
                   fullWidth
                   multiline
                   rows={4}
                 />
               ) : (
-                editedProject.comment
+                projectValues.comment
               )}
             </Typography>
           </Grid>
         </Grid>
-        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+        <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
           {isEditing ? (
             <>
-              <Button variant="contained" color="primary" onClick={handleSave} sx={{ mr: 1 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSave}
+                sx={{ mr: 1 }}
+              >
                 Save
               </Button>
-              <Button variant="outlined" color="secondary" onClick={handleCancel}>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={handleCancel}
+              >
                 Cancel
               </Button>
             </>
           ) : (
             <>
-              <Button variant="contained" color="primary" onClick={() => setIsEditing(true)}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setIsEditing(true)}
+              >
                 Edit
               </Button>
             </>

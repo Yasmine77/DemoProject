@@ -6,18 +6,18 @@ import { Box, Container } from '@mui/material';
 
 const columns = [
   { id: 'selected', label: '' },
-  { id: 'ID', label: '#' },
-  { id: 'Title', label: 'Title' },
-  { id: 'Type', label: 'Type' },
-  { id: 'Implementation Status', label: 'Implementation Status' },
-  { id: 'Regional Dialogue', label: 'Regional Dialogue' },
-  { id: 'Start Year', label: 'Start Year' },
-  { id: 'End Year', label: 'End Year' },
-  { id: 'Contact', label: 'Contact' },
-  { id: 'Database Status', label: 'Database Status' },
-  { id: 'Total Budget', label: 'Total Budget' },
-  { id: 'IAT', label: 'IAT' },
-  { id: 'Status', label: 'Status' },
+  { id: 'id', label: '#' },
+  { id: 'title', label: 'Title' },
+  { id: 'type', label: 'Type' },
+  { id: 'implementationStatus', label: 'Implementation Status' },
+  { id: 'regionalDialogue', label: 'Regional Dialogue' },
+  { id: 'startYear', label: 'Start Year' },
+  { id: 'endYear', label: 'End Year' },
+  { id: 'contact', label: 'Contact' },
+  { id: 'databaseStatus', label: 'Database Status' },
+  { id: 'totalBudget', label: 'Total Budget' },
+  { id: 'iat', label: 'IAT' },
+  { id: 'status', label: 'Status' },
 ];
 
 const contact = {
@@ -33,8 +33,8 @@ const contact = {
 
 const HomePage = () => {
   let dataArray = [
-    { ID: 1, Title: 'Project A', Type: 'Type 1', 'Implementation Status': 'Ongoing', 'Regional Dialogue': 'Yes', 'Start Year': 2020, 'End Year': 2023, Contact: 'John Doe', 'Database Status': 'Active', 'Total Budget': '$1M', IAT: 'N/A', Status: 'In Progress' },
-    { ID: 2, Title: 'Project B', Type: 'Type 2', 'Implementation Status': 'Completed', 'Regional Dialogue': 'No', 'Start Year': 2019, 'End Year': 2021, Contact: 'Jane Smith', 'Database Status': 'Inactive', 'Total Budget': '$500K', IAT: 'N/A', Status: 'Finished' },
+    { id: 1, title: 'Project A', type: 'Type 1', implementationStatus: 'Ongoing', regionalDialogue: 'Yes', startYear: 2020, endYear: 2023, contact: 'John Doe', databaseStatus: 'Active', totalBudget: '$1M', iat: 'N/A', status: 'In Progress' },
+    { id: 2, title: 'Project B', type: 'Type 2', implementationStatus: 'Completed', regionalDialogue: 'No', startYear: 2019, endYear: 2021, contact: 'Jane Smith', databaseStatus: 'Inactive', totalBudget: '$500K', iat: 'N/A', status: 'Finished' },
     // Add more data here
   ];
   const [data, setData] = useState(dataArray); 
